@@ -6,7 +6,10 @@ export default function Page() {
     <p className="font-semibold">What?</p>
     <br/>
     <p>Track Definitions are used by Squarp&apos;s HAPAX to be able to programatically configure tracks.</p>
+    <br/>
     <p>The hope of this project was to ease the creating and editing Track Definitions on Squarp&apos;s HAPAX. Another goal was to encourage the sharing Track Definitions.</p>
+    <br/>
+    <p>All the Track Definition editing logic runs in the browser. No data (besides general tracking data), is transferred to a server.</p>
     <br/>
     <br/>
     <p className="font-semibold">How do I use the creator tool?</p>
