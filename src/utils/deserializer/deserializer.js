@@ -4,7 +4,6 @@ import Parsers from './parsers'
 
 // Deserializes a track definition file.
 export default async function deserializer(fileContent) {
-    console.log('dsrlzin')
     const newState = {}
     let parent = void 0
 

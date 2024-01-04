@@ -24,4 +24,6 @@ const Input = forwardRef(({ onChange, info, onBlur, name, label, disabled, value
     </div>)
 })
 
+Input.displayName = 'Input'
+
 export default Input

@@ -1,89 +1,83 @@
 'use client'
 
 import { create } from 'zustand'
-import { persist, createJSONStorage } from 'zustand/middleware'
-import { DRUMLANES, ASSIGN_TYPE, AUTOMATION_TYPE, DEPTH, MAX_AUTOMATION_LANES, MAX_DRUMLANES, POTNUMBER } from '@/utils/constants'
-import { strToU8, strFromU8, compressSync, decompressSync } from 'fflate'
+import { persist } from 'zustand/middleware'
+import { MAX_AUTOMATION_LANES, MAX_DRUMLANES } from '@/utils/constants'
+//import { strToU8, strFromU8, compressSync, decompressSync } from 'fflate'
 
-const hashStorage = {
-    getItem(key) {
-        const params = new URLSearchParams(location.hash.slice(1))
-        const value = params.get(key) ?? ''
-        const compressed = new Uint8Array(value.split('-'))
-        const decompressed = decompressSync(compressed)
-        const orig = strFromU8(decompressed) 
-        return orig
-    },
-    setItem(key, newValue) {
-        const params = new URLSearchParams(location.hash.slice(1))
-        const compressed = compressSync(strToU8(newValue))
-        params.set(key, compressed.join('-').toString())
-        location.hash = params.toString()
-    },
-    removeItem(key) {
-        const params = new URLSearchParams(location.hash.slice(1))
-        params.delete(key)
-        location.hash = params.toString()
-    }
-}
-
+// const hashStorage = {
+//     getItem(key) {
+//         const params = new URLSearchParams(location.hash.slice(1))
+//         const value = params.get(key) ?? ''
+//         const compressed = new Uint8Array(value.split('-'))
+//         const decompressed = decompressSync(compressed)
+//         const orig = strFromU8(decompressed) 
+//         return orig
+//     },
+//     setItem(key, newValue) {
+//         const params = new URLSearchParams(location.hash.slice(1))
+//         const compressed = compressSync(strToU8(newValue))
+//         const finalValue = compressed.join('-').toString()
+//         params.set(key, finalValue)
+//         location.hash = params.toString()
+//     },
+//     removeItem(key) {
+//         const params = new URLSearchParams(location.hash.slice(1))
+//         params.delete(key)
+//         location.hash = params.toString()
+//     }
+// }
 
 let key = 0
-function getKey() {
-    key++
-    return key
-}
 
-function Drumlane(options) {
+function Drumlane(data) {
     key++
     return {
         id: key,
-        fieldSetName: 'DRUMLANE', 
+        fieldSetName: 'drumlane', 
         formItems:[
         {
             key: `ds-${key}-row`,
             label: 'row',
             type: 'select',
-            value: 1,
+            value: data.row || '1',
             keyName: 'row',
-            options: options.POTNUMBER
         },
         {
             key: `ds-${key}-name`,
             label: 'name',
             keyName: 'name',
             type: 'input',
-            value: 'boom-bada-boom',
+            value: data.name || 'boom-bada-boom',
         },
         {
             key: `ds-${key}-trig`,
             type: 'input',
             label: 'trigger',
             keyName: 'trig',
-            value: '1'
+            value: data.trig || '1'
         },
         {
             key: `ds-${key}-chan`,
             label: 'channel',
             type: 'select',
             keyName: 'chan',
-            value: 'NULL',
-            options: options.DRUMLANES
+            value: data.chan || 'NULL',
         },
         {
             key: `ds-${key}-notenumber`,
             label: 'note',
             type: 'input',
             keyName: 'notenumber',
-            value: 'NULL',
+            value: data.notenumber || 'NULL',
         },
     ]}
 }
 
-function ProgramChange() {
+function ProgramChange(data) {
     key++
     return {
-        fieldSetName: 'PC',
+        fieldSetName: 'pc',
         id: key,
         formItems: [
             {
@@ -91,65 +85,57 @@ function ProgramChange() {
                 label: 'number',
                 type: 'input',
                 keyName: 'number',
-                value: '',
+                value: data.number || '',
             },
             {
                 key: `pc-${key}-name`,
                 label: 'name',
                 type: 'input',
                 keyName: 'name',
-                value: ''
+                value: data.name || ''
             }
         ]
     }
 }
 
-function CCFormItem(key) {
+function CC(data) {
+    key++
     return {
-        fieldSetName: 'CC',
+        fieldSetName: 'cc',
         id: key,
         info: [
             'If DEFAULT is specified, it must be a valid number between 0 and 127.'
         ],
         formItems: [
             {
-                key: `cc-${key}-number`,
+                key: `ctch-${key}-number`,
                 label: 'number',
                 type: 'input',
                 keyName: 'number',
-                value: '',
+                value: data.number || '',
             },
             {
-                key: `cc-${key}-name`,
+                key: `ctch-${key}-name`,
                 label: 'name',
                 type: 'input',
                 keyName: 'name',
-                value: ''
+                value: data.name || ''
             },
             {
-                key: `cc-${key}-default`,
+                key: `ctch-${key}-default`,
                 label: 'default',
                 type: 'input',
                 keyName: 'default',
-                value: void 0,
+                value: data.default || '',
             },
         ]
     }
 }
 
-function CC(key) {
-    return {
-        id: key,
-        number: '',
-        name: '',
-        default: ''
-    }
-}
-
-function NRPN(options) {
+function NRPN(data) {
     key++
     return {
-        fieldSetName: 'NRPN',
+        fieldSetName: 'nrpn',
         id: key,
         info: [
             '<u>PC</u> must be between 1 and 128. <u>MSB/LSB</u> must be between 0 and 128 or NULL.'
@@ -160,45 +146,44 @@ function NRPN(options) {
                 label: 'msb',
                 type: 'input',
                 keyName: 'msb',
-                value: 0,
+                value: data.msb || '0',
             },
             {
                 key: `nrpn-${key}-lsb`,
                 label: 'lsb',
                 type: 'input',
                 keyName: 'lsb',
-                value: 0,
+                value: data.lsb || '0',
             },
             {
                 key: `nrpn-${key}-depth`,
                 label: 'depth',
                 type: 'select',
                 keyName: 'depth',
-                value: 7,
-                options: options.DEPTH,
+                value: data.depth || '7',
             },
             {
                 key: `nrpn-${key}-default`,
                 label: 'default',
                 keyName: 'default',
                 type: 'input',
-                value: ''
+                value: data.default || ''
             },
             {
                 key: `nrpn-${key}-name`,
                 label: 'name',
                 keyName: 'name',
                 type: 'input',
-                value: ''
+                value: data.name || ''
             }
         ]
     }
 }
 
-function Assign(options) {
+function Assign(data) {
     key++
     return {
-        fieldSetName: 'ASSIGN',
+        fieldSetName: 'assign',
         id: key,
         info: [
             '<u>POTNUMBER</u> must be between 1 and 8.',
@@ -207,42 +192,40 @@ function Assign(options) {
         formItems: [
             {
                 key: `assign-${key}-pot`,
-                label: 'pot number',
+                label: 'pot',
                 type: 'select',
                 keyName: 'potnumber',
-                value: 1,
-                options: options.POTNUMBER
+                value: data.potnumber || '1',
             },
             {
                 key: `assign-${key}-type`,
                 label: 'type',
                 keyName: 'type',
                 type: 'select',
-                value: options.ASSIGN_TYPE[0],
-                options: options.ASSIGN_TYPE
+                value: data.type || 'CC',
             },
             {
                 key: `assign-${key}-value`,
                 label: 'value',
                 keyName: 'value',
                 type: 'input',
-                value: ''
+                value: data.value || ''
             },
             {
                 key: `assign-${key}-default`,
                 keyName: 'default',
                 label: 'default',
                 type: 'input',
-                value: ''
+                value: data.default || ''
             },
         ]
     }
 }
 
-function Automation(options) {
+function Automation(data) {
     key++
     return {
-        fieldSetName: 'AUTOMATION',
+        fieldSetName: 'automation',
         id: key,
         info: [
             '<u>POTNUMBER</u> must be between 1 and 8.',
@@ -254,15 +237,14 @@ function Automation(options) {
                 label: 'type',
                 type: 'select',
                 keyName: 'type',
-                value: options.AUTOMATION_TYPE[0],
-                options: options.AUTOMATION_TYPE
+                value: data.type || 'CC',
             },
             {
                 key: `at-${key}-val`,
                 label: 'value',
                 type: 'input',
                 keyName: 'value',
-                value: ''
+                value: data.value || ''
             },
         ]
     }
@@ -271,8 +253,7 @@ function Automation(options) {
 
 function collectionUpdater(d, id, key, v) {
     if (d.id == id) {
-        d[key] = v
-        d.map(item => {
+        d.formItems.map(item => {
             if (item.keyName == key) item.value = v
             return item
         })
@@ -296,11 +277,6 @@ const baseState = {
     as: [],
     at: [],
     c: '',
-    dsFormItems: [],
-    pcFormItems: [],
-    ccFormItems: [],
-    asFormItems: [],
-    atFormItems: [],
 }
 
 const useTrackDefinition = create(
@@ -318,8 +294,8 @@ const useTrackDefinition = create(
             updateComment: (comment) => set(() => ({c: comment})),
 
             // Collection Actions
-            addDrumlane: () => set((state) => ({
-                ds: ((state.ds.length < MAX_DRUMLANES) ? state.ds.concat([Drumlane({DRUMLANES, POTNUMBER})]) : state.ds)
+            addDrumlane: (data) => set((state) => ({
+                ds: ((state.ds.length < MAX_DRUMLANES) ? state.ds.concat([Drumlane(data || {})]) : state.ds)
             })),
             updateDrumlane: (v, key, id) => set((state) => ({
                 ds: state.ds.map(d => collectionUpdater(d, id, key, v))
@@ -330,8 +306,8 @@ const useTrackDefinition = create(
                 })
             })),
 
-            addProgramChange: () => set((state) => ({
-                pc: state.pc.concat([ProgramChange()])
+            addProgramChange: (data) => set((state) => ({
+                pc: state.pc.concat([ProgramChange(data || {})])
             })),
             updateProgramChange: (v, key, id) => set((state) => ({
                 pc: state.pc.map(d => collectionUpdater(d, id, key, v))
@@ -342,18 +318,10 @@ const useTrackDefinition = create(
                 })
             })),
 
-            newCC: (cc) => set((state) => ({
-                cc: state.cc.concat([cc])
+        
+            addCC: (data) => set((state) => ({
+                cc: state.cc.concat(CC(data || {}))
             })),
-            newCCFormItem: (ccFormItem) => set((state) => ({
-                ccFormItems: state.ccFormItems.concat([ccFormItem])
-            })),
-            addCC: () => {
-                const key = getKey()
-                get().newCC(CC(key))
-                get().newCCFormItem(CCFormItem(key))
-            },
-
             updateCC: (v, key, id) => set((state) => ({
                 cc: state.cc.map(d => collectionUpdater(d, id, key, v))
             })),
@@ -363,8 +331,8 @@ const useTrackDefinition = create(
                 })
             })),
 
-            addNRPN: () => set((state) => ({
-                nn: state.nn.concat([NRPN({DEPTH})])
+            addNRPN: (data) => set((state) => ({
+                nn: state.nn.concat([NRPN(data || {})])
             })),
             updateNRPN: (v, key, id) => set((state) => ({
                 nn: state.nn.map(d => collectionUpdater(d, id, key, v))
@@ -375,8 +343,8 @@ const useTrackDefinition = create(
                 })
             })),
 
-            addAutomation: () => set((state) => ({
-                at: ((state.at.length < MAX_AUTOMATION_LANES) ? state.at.concat([Automation({AUTOMATION_TYPE, DEPTH})]): state.at)
+            addAutomation: (data) => set((state) => ({
+                at: ((state.at.length < MAX_AUTOMATION_LANES) ? state.at.concat([Automation(data || {})]): state.at)
             })),
             updateAutomation: (v, key, id) => set((state) => ({
                 at: state.at.map(d => collectionUpdater(d, id, key, v))
@@ -387,8 +355,8 @@ const useTrackDefinition = create(
                 })
             })),
 
-            addAssign: () => set((state) => ({
-                as: state.as.concat([Assign({POTNUMBER, ASSIGN_TYPE})])
+            addAssign: (data) => set((state) => ({
+                as: state.as.concat([Assign(data || {})])
             })),
             updateAssign: (v, key, id) => set((state) => ({
                 as: state.as.map(d => collectionUpdater(d, id, key, v))
@@ -401,7 +369,6 @@ const useTrackDefinition = create(
 
             // Rendering
             toUIJSON: () => {
-                console.log('preview')
                 const obj = {
                     VERSION: '1',
                     TYPE: get().ty,
@@ -412,27 +379,26 @@ const useTrackDefinition = create(
                     INCHAN: get().ic,
                     MAXRATE: get().mr,
                     COMMENT: (get().c.length) ? [get().c] : [],
-                    CC: get().cc,
                 }
 
-                // const collections = {
-                //     //DRUMLANES: get().ds,
-                //     //PC: get().pc,
-                //     CC: get().cc,
-                //     //NRPN: get().nn,
-                //     //ASSIGN: get().as,
-                //     //AUTOMATION: get().at,
-                // }
+                const collections = {
+                    DRUMLANES: get().ds,
+                    PC: get().pc,
+                    CC: get().cc,
+                    NRPN: get().nn,
+                    ASSIGN: get().as,
+                    AUTOMATION: get().at,
+                }
 
-                // Object.keys(collections).forEach(collectionKey => {
-                //     const collection = collections[collectionKey]
-                //     obj[collectionKey] = collection.reduce((accumulator, d) => {
-                //         return accumulator.concat(d.reduce((obj, item) => {
-                //             obj[item.keyName] = item.value
-                //             return obj
-                //         }, {}))
-                //     }, [])
-                // })
+                Object.keys(collections).forEach(collectionKey => {
+                    const collection = collections[collectionKey]
+                    obj[collectionKey] = collection.reduce((accumulator, d) => {
+                        return accumulator.concat(d.formItems.reduce((obj, item) => {
+                            obj[item.keyName] = item.value
+                            return obj
+                        }, {}))
+                    }, [])
+                })
                 
                 return obj
             },
@@ -441,29 +407,38 @@ const useTrackDefinition = create(
                 set(baseState)
             },
  
-            updateFromUpload: (uploadState) => set(() => ({
-                //cc: (uploadState.cc?.length ? state.cc.splice(0, state.cc.length).concat(uploadState.cc) : state.cc),
-                tn: uploadState.tn,
-                c: uploadState.c,
-                mr: uploadState.mr,
-                ty: uploadState.ty,
-                op: uploadState.op,
-                oc: uploadState.oc,
-                ip: uploadState.ip,
-                ic: uploadState.ic,
-            }))
-            //     ds: (uploadState.ds?.length ? state.ds.splice(0, state.ds.length).concat(uploadState.ds) : state.ds),
-            //     as: (uploadState.as?.length ? state.as.splice(0, state.as.length).concat(uploadState.as) : state.as),
-            //     nn: (uploadState.nn?.length ? state.nn.splice(0, state.nn.length).concat(uploadState.nn) : state.nn),
-            //     at: (uploadState.at?.length ? state.at.splice(0, state.at.length).concat(uploadState.at) : state.at),
-            //     cc: (uploadState.cc?.length ? state.cc.splice(0, state.cc.length).concat(uploadState.cc) : state.cc),
-            //     pc: (uploadState.pc?.length ? state.pc.splice(0, state.pc.length).concat(uploadState.pc) : state.pc)
-            // })
-        
+            updateFromUpload: (uploadState) => {
+                get().reset()
+                get().updateTrackname(uploadState.tn)
+                get().updateType(uploadState.ty)
+                get().updateOutchan(uploadState.oc)
+                get().updateOutport(uploadState.op)
+                get().updateInport(uploadState.ip)
+                get().updateInchan(uploadState.ic)
+                get().updateMaxrate(uploadState.mr)
+                get().updateComment(uploadState.c)
+                uploadState.ds?.forEach(d => {
+                    get().addDrumlane(d)
+                })
+                uploadState.cc?.forEach(d => {
+                    get().addCC(d)
+                })
+                uploadState.nn?.forEach(d => {
+                    get().addNRPN(d)
+                })
+                uploadState.as?.forEach(d => {
+                    get().addAssign(d)
+                })
+                uploadState.at?.forEach(d => {
+                    get().addAutomation(d)
+                })
+                uploadState.pc?.forEach(d => {
+                    get().addProgramChange(d)
+                })
+            }
         }),
         {
             name: 't',
-            storage: createJSONStorage(() => hashStorage),
             skipHydration: true,
         }
     ))

@@ -5,55 +5,66 @@ import Fieldset from './Fieldset'
 import FormItems  from './FormItems'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { OUTPORT, OUTCHAN, INCHAN, INPORT, MAXRATE, TYPE, COLLECTIONS } from '@/utils/constants'
 import { CollectionHeader } from '../CollectionHeader'
-import Button from '../../ui/Button'
 
 export default function TrackDefinitionForm() {
-    const localUse = (prop) => useTrackDefinition(state => state[prop])
+    const useLocal = (prop) => useTrackDefinition(state => state[prop])
 
-    // useEffect(() => {
-    //     useTrackDefinition.persist.rehydrate();
-    //   }, [])
+    useEffect(() => {
+        useTrackDefinition.persist.rehydrate();
+      }, [])
 
-    // Settings
-    // Singular
-    const v = localUse('v')
-    const tn =localUse('tn')
-    const ty = localUse('ty')
-    const op = localUse('op')
-    const oc = localUse('oc')
-    const ip = localUse('ip')
-    const ic = localUse('ic')
-    const mr = localUse('mr')
-    const c = localUse('c')
+    // Settings Singular
+    const v = useLocal('v')
+    const tn =useLocal('tn')
+    const ty = useLocal('ty')
+    const op = useLocal('op')
+    const oc = useLocal('oc')
+    const ip = useLocal('ip')
+    const ic = useLocal('ic')
+    const mr = useLocal('mr')
+    const c = useLocal('c')
 
-    const updateTrackname = localUse('updateTrackname')
-    const updateOutport = localUse('updateOutport')
+    const updateTrackname = useLocal('updateTrackname')
+    const updateOutport = useLocal('updateOutport')
+    const updateOutchan = useLocal('updateOutchan')
+    const updateType = useLocal('updateType')
+    const updateMaxrate = useLocal('updateMaxrate')
+    const updateComment = useLocal('updateComment')
+    const updateInchan = useLocal('updateInchan')
+    const updateInport = useLocal('updateInport')
 
     // Multiform
-    const ds = localUse('ds')
-    const cc = localUse('ccFormItems')
-    const nn = localUse('nn')
-    const at = localUse('at')
-    const as = localUse('as')
-    const pc = localUse('pc')
+    const ds = useLocal('ds')
+    const cc = useLocal('cc')
+    const nn = useLocal('nn')
+    const at = useLocal('at')
+    const as = useLocal('as')
+    const pc = useLocal('pc')
 
-    // Actions
-    const destroyers = COLLECTIONS.reduce((accumulator, value) => {
-        accumulator[value] = localUse(`destroy${value}`)
-        return accumulator
-    }, {})
+    const destroyers = {}
+    destroyers.Assign = useLocal('destroyAssign')
+    destroyers.CC = useLocal('destroyCC')
+    destroyers.NRPN = useLocal('destroyNRPN')
+    destroyers.Drumlane = useLocal('destroyDrumlane')
+    destroyers.Automation = useLocal('destroyAutomation')
+    destroyers.ProgramChange = useLocal('destroyProgramChange')
 
-    const updaters = COLLECTIONS.reduce((accumulator, value) => {
-        accumulator[value] = localUse(`update${value}`)
-        return accumulator
-    }, {})
+    const updaters = {}
+    updaters.Assign = useLocal('updateAssign')
+    updaters.CC = useLocal('updateCC')
+    updaters.NRPN = useLocal('updateNRPN')
+    updaters.Drumlane = useLocal('updateDrumlane')
+    updaters.Automation = useLocal('updateAutomation') 
+    updaters.ProgramChange = useLocal('updateProgramChange')
 
-    const adders = COLLECTIONS.reduce((accumulator, value) => {
-        accumulator[value] = localUse(`add${value}`)
-        return accumulator
-    }, {}) 
+    const adders = {}
+    adders.Assign = useLocal('addAssign')
+    adders.CC = useLocal('addCC')
+    adders.NRPN = useLocal('addNRPN')
+    adders.Drumlane = useLocal('addDrumlane')
+    adders.Automation = useLocal('addAutomation') 
+    adders.ProgramChange = useLocal('addProgramChange')
 
     const { register } = useForm()
 
@@ -74,9 +85,9 @@ export default function TrackDefinitionForm() {
                 type: 'select',
                 name: 'ty',
                 key: 'select',
+                fieldsetName: 'type',
                 value: ty,
-                onChange: localUse('updateType'),
-                options: TYPE,
+                onChange: updateType,
             },
             {
                 label: 'maxrate',
@@ -84,8 +95,8 @@ export default function TrackDefinitionForm() {
                 type: 'select',
                 key: 'maxrate',
                 value: mr,
-                options: MAXRATE,
-                onChange: localUse('updateMaxrate')
+                fieldsetName: 'maxrate',
+                onChange: updateMaxrate
             },
         ],
         [
@@ -105,8 +116,8 @@ export default function TrackDefinitionForm() {
             name: 'op',
             type: 'select',
             key: 'outport',
+            fieldsetName: 'outport',
             value: op,
-            options: OUTPORT,
             onChange: updateOutport
         },
         {
@@ -114,27 +125,27 @@ export default function TrackDefinitionForm() {
             name: 'oc',
             type: 'select',
             key: 'outchan',
+            fieldsetName: 'outchan',
             value: oc,
-            options: OUTCHAN,
-            onChange: localUse('updateOutchan')
+            onChange: updateOutchan
         },
         {
             label: 'inport',
             name: 'ip',
             type: 'select',
             key: 'inport',
+            fieldsetName: 'inport',
             value: ip,
-            options: INPORT,
-            onChange: localUse('updateInport')
+            onChange: updateInport
         },
         {
             label: 'inchan',
             name: 'ic',
             type: 'select',
             key: 'inchan',
+            fieldsetName: 'inchan',
             value: ic,
-            options: INCHAN,
-            onChange: localUse('updateInchan')
+            onChange: updateInchan
         }],
         [
         {
@@ -143,7 +154,7 @@ export default function TrackDefinitionForm() {
             key: 'comments',
             value: c,
             type: 'input',
-            onChange: localUse('updateComment')
+            onChange: updateComment
         }]
     ]
 
@@ -152,12 +163,11 @@ export default function TrackDefinitionForm() {
             {baseFormData.map((chunk, index) => {
                 return <FormItems 
                 formItems={chunk}
-                chunkWidth={chunk.length}
                 register={register}
                 key={`baseform-${index}`} />
             })}
 
-        {/* <CollectionHeader text="Drumlanes"/>
+        <CollectionHeader text="Drumlanes"/>
         {ds.map((value, key) => {
             return <Fieldset
             key={key}
@@ -169,8 +179,8 @@ export default function TrackDefinitionForm() {
             register={register} />
         })}
 
-        <Button bg="bg-purple-100 hover:bg-purple-500 dark:text-black w-full" onClick={adders.Drumlane}>Add Drumlane</Button>
-         */}
+        <p className="p-2 cursor-pointer bg-purple-100 hover:bg-purple-300 dark:text-black w-full" onClick={() => adders.Drumlane()}>Add Drumlane</p>
+        
         <CollectionHeader text="Control Changes"/>
         {cc.map((value, key) => {
             return <Fieldset
@@ -183,8 +193,9 @@ export default function TrackDefinitionForm() {
             register={register} />
         })}
 
-        <Button bg="bg-yellow-100 hover:bg-yellow-400 dark:text-black w-full" onClick={adders.CC}>Add CC</Button>
-{/* 
+        <p className="p-2 cursor-pointer bg-yellow-100 hover:bg-yellow-300 dark:text-black w-full" onClick={() => adders.CC()}>Add CC</p>
+
+
         <CollectionHeader text="Program Changes"/>
         {pc.map((value, key) => {
             return <Fieldset
@@ -197,7 +208,7 @@ export default function TrackDefinitionForm() {
             register={register} />
         })}
 
-        <Button bg="bg-pink-100 hover:bg-pink-300 dark:text-black w-full" onClick={adders.ProgramChange}>Add PC</Button>
+        <p className="p-2 cursor-pointer bg-pink-100 hover:bg-pink-300 dark:text-black w-full" onClick={() => adders.ProgramChange()}>Add PC</p>
 
         <CollectionHeader text="Assigns"/>
         {as.map((value, key) => {
@@ -211,7 +222,7 @@ export default function TrackDefinitionForm() {
             register={register} />
         })}
 
-        <Button bg="bg-rose-100 hover:bg-rose-400 dark:text-black w-full" onClick={adders.Assign}>Add Assign</Button>
+        <p className="p-2 cursor-pointer bg-rose-100 hover:bg-rose-400 dark:text-black w-full" onClick={() => adders.Assign()}>Add Assign</p>
 
         <CollectionHeader text="Non-Registered Parameter Numbers"/>
         {nn.map((value, key) => {
@@ -225,7 +236,7 @@ export default function TrackDefinitionForm() {
             register={register} />
         })}
 
-        <Button bg="bg-teal-100 hover:bg-teal-400 dark:text-black w-full" onClick={adders.NRPN}>Add NRPN</Button>
+        <p className="p-2 cursor-pointer bg-teal-100 hover:bg-teal-400 dark:text-black w-full" onClick={() => adders.NRPN()}>Add NRPN</p>
         
         <CollectionHeader text="Automations"/>
         {at.map((value, key) => {
@@ -239,7 +250,7 @@ export default function TrackDefinitionForm() {
             register={register} />
         })}
 
-        <Button bg="bg-blue-100 hover:bg-blue-400 dark:text-black w-full" onClick={adders.Automation}>Add Automation</Button> */}
+        <p className="p-2 cursor-pointer bg-blue-100 hover:bg-blue-400 dark:text-black w-full" onClick={() =>adders.Automation()}>Add Automation</p>
 
         </div>
     </form>

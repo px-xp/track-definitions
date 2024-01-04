@@ -9,6 +9,7 @@ const Fieldset = ({ formItems, fieldsetName, fieldsetKey, fieldsetDestroy, regis
         onChange={onChange}
         register={register}
         id={fieldsetKey}
+        fieldsetName={fieldsetName}
         destroyHandler={fieldsetDestroy}
         key={fieldsetKey}/>
     </fieldset>)

@@ -1,4 +1,4 @@
-import Header from "@/components/ui/Header"
+import Header from '@/components/ui/Header'
 
 export default function Page() {
     return (<div className="container mx-auto">
@@ -8,7 +8,7 @@ export default function Page() {
           VERSION 1 # Currently, this should only be 1.
           <br/>
           <br/>
-          # Supports all alphanumeric ASCII, and ' ', '_', '-', '+' - can also be NULL
+          # Supports all alphanumeric ASCII, and &apos; &apos;, &apos;_&apos;, &apos;-&apos;, &apos;+&apos; - can also be NULL
           <br/>
           TRACKNAME NULL
           <br/>
@@ -38,7 +38,7 @@ export default function Page() {
           INCHAN NULL
           <br/>
           <br/>
-          # This defines the default 'MAX RATE' for automation lanes.
+          # This defines the default &apos;MAX RATE&apos; for automation lanes.
           <br/>
           # Can be NULL, 192, 96, 64, 48, 32, 24, 16, 12, 8, 6, 4, 3, 2, 1
           <br/>
@@ -57,7 +57,7 @@ export default function Page() {
           <br/>
           # NOTENUMBER can be between 0 and 127, or NULL
           <br/>
-          # NAME supports all alphanumeric ASCII, and ' ', '_', '-', '+' - can also be NULL
+          # NAME supports all alphanumeric ASCII, and &apos; &apos;, &apos;_&apos;, &apos;-&apos;, &apos;+&apos; - can also be NULL
           <br/>
           # Please note this section will be discarded for tracks which are not DRUM tracks
           <br/>
@@ -74,7 +74,7 @@ export default function Page() {
           <br/>
           #   - A number (for simple PC)
           <br/>
-          #   - Three numbers, delimited by ':', which represent PC:MSB:LSB. You can put 'NULL' to not set the MSB/LSB.
+          #   - Three numbers, delimited by &apos;:&apos;, which represent PC:MSB:LSB. You can put &apos;NULL&apos; to not set the MSB/LSB.
           <br/>
           # PC must be between 1...128
           <br/>
@@ -98,15 +98,15 @@ export default function Page() {
           <br/>
           # NRPN
           <br/>
-          # Syntax: "MSB:LSB:DEPTH NAME" or "MSB:LSB:DEPTH:DEFAULT=xx NAME"
+          # Syntax: &quot;MSB:LSB:DEPTH NAME&quot; or &quot;MSB:LSB:DEPTH:DEFAULT=xx NAME&quot;
           <br/>
           # Lsb & msb should be between 0 and 127
           <br/>
             # Note: LSB can be over 127 ONLY if MSB is 0 or omitted
             <br/>
-            # e.g. '0:1026:7 FOO', or ':2000:7 BAR' 
+            # e.g. &apos;0:1026:7 FOO&apos;, or &apos;:2000:7 BAR&apos; 
             <br/>
-            # the examples above would be equivalent to '8:2:7 FOO' and '15:80:7 BAR' respectively
+            # the examples above would be equivalent to &apos;8:2:7 FOO&apos; and &apos;15:80:7 BAR&apos; respectively
             <br/>
           # DEPTH can be 7 or 14
           <br/>
@@ -123,9 +123,9 @@ export default function Page() {
           <br/>
           # POT_NUMBER must be between 1 and 8
           <br/>
-          # TYPE can be "CC", "PB" (pitchbend), "AT" (aftertouch), "CV", "NRPN", or "NULL" (this won't assign the pot).
+          # TYPE can be &quot;CC&quot;, &quot;PB&quot; (pitchbend), &quot;AT&quot; (aftertouch), &quot;CV&quot;, &quot;NRPN&quot;, or &quot;NULL&quot; (this won&apos;t assign the pot).
           <br/>
-          # Non explicitly-defined pots will be considered "NULL"
+          # Non explicitly-defined pots will be considered &quot;NULL&quot;
           <br/>
           # VALUE VALIDATION
           <br/>
@@ -145,7 +145,7 @@ export default function Page() {
           <br/>
           #### For NRPN: DEFAULT_VALUE must be a valid number, either between 0 and 127 (for 7 bit NRPNs) or between 0 and 16383 (for 14bit NRPNs)
           <br/>
-          #### For CV: DEFAULT_VALUE must be either a valid number between 0 and 65535, or a voltage between -5V and 5V, e.g. "-4.25V" or "1.7V"
+          #### For CV: DEFAULT_VALUE must be either a valid number between 0 and 65535, or a voltage between -5V and 5V, e.g. &quot;-4.25V&quot; or &quot;1.7V&quot;
           <br/>
           #### Please note default value will be ignored for PB and AT messages.
           <br/>
@@ -158,7 +158,7 @@ export default function Page() {
           <br/>
           # Syntax: TYPE:VALUE
           <br/>
-          # TYPE can be "CC", "PB" (pitchbend), "AT" (aftertouch), "CV", or "NRPN"
+          # TYPE can be &quot;CC&quot;, &quot;PB&quot; (pitchbend), &quot;AT&quot; (aftertouch), &quot;CV&quot;, or &quot;NRPN&quot;
           <br/>
           # VALUE VALIDATION
           <br/>
@@ -187,7 +187,7 @@ export default function Page() {
         </code>
       </pre>
       <br/>
-      <p className="text-center ordinal">Version as of January, 3<sup>rd</sup>, 2024.</p>
+      <p className="text-center">Version as of January, 3<sup>rd</sup>, 2024.</p>
     </div>)
   }
   

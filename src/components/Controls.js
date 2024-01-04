@@ -1,20 +1,20 @@
 'use client'
 
 import { PreviewSerializer } from '@/utils/serializer'
-import useTrackDefinition from '../../stores/useTrackDefinition'
+import useTrackDefinition from '@/stores/useTrackDefinition'
 import { ArrowDownCircleIcon } from '@heroicons/react/16/solid'
-import Button from '../ui/Button'
+import Button from '@/components/ui/Button'
 import deserializer from '@/utils/deserializer/deserializer'
 import { useRef } from 'react'
 
-export default function Save() {
+export default function Controls() {
     const reset = useTrackDefinition().reset
+    const json = useTrackDefinition().toUIJSON
 
     const handleSave = () => {
-        const json = useTrackDefinition().toUIJSON
         const data = json()
         const content = PreviewSerializer(data)
-        const trackname = (data.TRACKNAME ?? 'track').replace(/[\/\?<>\\:*|"]/g, '_').replace(/[+ ]/g, '_')
+        const trackname = (data.TRACKNAME || 'track').replace(/[\/\?<>\\:*|"]/g, '_').replace(/[+ ]/g, '_')
         const filename = `${trackname}_td_${Date.now()}.txt`
         const blob = new Blob([content], {type: 'text/plain'});
         

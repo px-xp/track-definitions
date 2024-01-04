@@ -4,7 +4,7 @@ import Input from '../../ui/input/Input'
 import Select from '../../ui/Select/Select'
 import { TrashIcon } from '@heroicons/react/24/outline' 
 
-const FormItems = ({ formItems, register, onChange, id, chunkWidth, destroyHandler }) => {
+const FormItems = ({ formItems, register, onChange, id, destroyHandler, fieldsetName }) => {
     let destroy = <></>
     if (destroyHandler) {
         destroy = <div className="flex items-center">
@@ -26,8 +26,9 @@ const FormItems = ({ formItems, register, onChange, id, chunkWidth, destroyHandl
                     name={formItem.name} 
                     options={formItem.options} 
                     label={formItem.label}
+                    keyName={formItem.keyName}
+                    fieldsetName={fieldsetName || formItem.fieldsetName}
                     defaultValue={formItem.value}
-                    chunkWidth={chunkWidth}
                     {...register(
                         registerKey, {
                             onChange: (e) => onChangeHandler(e.target.value, formItem.keyName, id)
@@ -42,7 +43,6 @@ const FormItems = ({ formItems, register, onChange, id, chunkWidth, destroyHandl
                     disabled={formItem.disabled}
                     value={formItem.value}
                     name={formItem.name}
-                    chunkWidth={chunkWidth}
                     {...register(
                         registerKey, 
                         {
