@@ -1,6 +1,6 @@
 'use client'
 
-import useTrackDefinition from '../../../stores/useTrackDefinition'
+import useTrackDefinition from '@/stores/useTrackDefinition'
 import Fieldset from './Fieldset'
 import FormItems  from './FormItems'
 import { useEffect } from 'react'

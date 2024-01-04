@@ -1,7 +1,7 @@
 'use client'
 
-import Input from '../../ui/input/Input'
-import Select from '../../ui/Select/Select'
+import Input from '@/components/ui/input/Input'
+import Select from '@/components/ui/select/Select'
 import { TrashIcon } from '@heroicons/react/24/outline' 
 
 const FormItems = ({ formItems, register, onChange, id, destroyHandler, fieldsetName }) => {

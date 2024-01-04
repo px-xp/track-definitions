@@ -1,6 +1,6 @@
 'use client'
 
-import useTrackDefinition from '../stores/useTrackDefinition'
+import useTrackDefinition from '@/stores/useTrackDefinition'
 import { PreviewSerializer } from '@/utils/serializer'
 
 export default function Preview() {
