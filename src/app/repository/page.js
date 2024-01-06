@@ -7,7 +7,7 @@ export default function Page() {
         <p>Want to submit your own definition? Please submit an issue on GitHub with your definition as a .txt file.</p>
         <br/>
         <ul>
-            <li><a target="_blank" rel="noopener noreferrer" href="/definitions/blofeld.txt">Blofeld</a></li>
+            <li><a target="_blank" rel="noopener noreferrer" href="track-definitions/definitions/blofeld.txt">Blofeld</a></li>
         </ul>
     </div>)
 }
