@@ -6,7 +6,7 @@ import Script from 'next/script'
 
 export default function Home() {
   return (<>
-    <Header text="Creator Tool"/>
+    <Header text="Definition Editor"/>
     <Controls/>
     <div className="grid grid-cols-3 gap-4">
         <div className="col-span-2">

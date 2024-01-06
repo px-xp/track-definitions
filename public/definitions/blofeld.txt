@@ -1,0 +1,167 @@
+############# POLY Example 1 #############
+VERSION 1 # Currently, this should only be 1.
+
+###### DEFINITIONS
+
+# Supports all alphanumeric ASCII, and ' ', '_', '-', '+'
+# Can also be omitted or NULL to not override the current track name, e.g. "TRACKNAME NULL"
+TRACKNAME Blofeld
+
+# Can be POLY, DRUM, MPE, or NULL
+TYPE POLY
+
+# Can be A, B, C, D, USBD, USBH, CVGx (x between 1&4), CVx, Gx, or NULL
+OUTPORT NULL
+
+# Can be x (between 1-16), or NULL -- this is ignored if output port is not MIDI
+OUTCHAN NULL
+
+# Can be NONE, ALLACTIVE, A, B, USBH, USBD, CVG, or NULL
+INPORT NONE
+
+# Can be x (between 1-16), ALL, or NULL -- ignored if INPORT is NONE, ALLACTIVE or CVG
+INCHAN ALL
+
+# This defines the default 'MAX RATE' for automation lanes.
+# Can be NULL, 192, 96, 64, 48, 32, 24, 16, 12, 8, 6, 4, 3, 2, 1
+MAXRATE NULL
+
+# PC
+# Syntax: NUMBER NAME
+# number must be either:
+#   - A number (for simple PC)
+#   - Three numbers, delimited by ':', which represent PC:MSB:LSB. You can put 'NULL' to not set the MSB/LSB.
+# PC must be between 1...128
+# MSB/LSB must be between 0...127
+[PC]
+1 INIT
+1:1:NULL BANKB_PATCH2 #for the blofeld, MSB sets the bank, PC sets the patch
+[/PC]
+
+# CC
+# Syntax: CC_NUMBER NAME or CC_NUMBER:DEFAULT=xx NAME
+# DEFAULT_VALUE must be a valid number between 0 and 127
+[CC]
+0 BaSelMSB
+1 ModWheel
+2 Breath Ctrl
+4 Foot Ctrl
+5 GlideRate
+7 ChVolume
+10 Pan
+12 ArpRange
+13 ArpLength
+14 ArpActive
+15 LFO1Shape
+16 LFO1Speed
+17 LFO1Sync
+18 LFO1Delay
+19 LFO2Shape
+20 LFO2Speed
+21 LFO2Sync
+22 LFO2Delay
+23 LFO3Shape
+24 LFO3Speed
+25 LFO3Sync
+26 LFO3Delay
+27 Osc1Octave
+28 Osc1Semitone
+29 Osc1Detune
+30 Osc1FM
+31 Osc1Shape
+32 BaSelLSB
+33 Osc1PW
+34 Osc1PWM
+35 Osc2Octave
+36 Osc2Semitone
+37 Osc2Detune
+38 Osc2FM
+39 Osc2Shape
+40 Osc2PW
+41 Osc2PWM
+42 Osc3Octave
+43 Osc3Semitone
+44 Osc3Detune
+45 Osc3FM
+46 Osc3Shape
+47 Osc3PW
+48 Osc3PWM
+49 Sync
+50 Pitchmod
+51 Glide Mode
+52 Osc1Level
+53 Osc1Balance
+54 RingLevel
+55 RingBalance
+56 Osc2Level
+57 Osc2Balance
+58 Osc3Level
+59 Osc3Balance
+60 NoiseLevel
+61 NoiseBalance
+62 NoiseColour
+64 SustPedal
+65 GlideActive
+66 Sostenuto
+67 Routing
+68 F1Type
+69 F1Cutoff
+70 F1Resonance
+71 F1Drive
+72 F1Keytrack
+73 F1EnvAmount
+74 F1EnvVelocity
+75 F1CutoffMod
+76 F1FM
+77 F1Pan
+78 F1Panmod
+79 F2Type
+80 F2Cutoff
+81 F2Resonance
+82 F2Drive
+83 F2Keytrack
+84 F2EnvAmount
+85 F2EnvVelocity
+86 F2CutoffMod
+87 F2FM
+88 F2Pan
+89 F2Panmod
+90 AmpVolume
+91 AmpVelocity
+92 AmpMod
+93 FX1Mix
+94 FX2Mix
+95 FEAttack
+96 FEDec
+97 FESust
+98 FEDec2
+99 FESust2
+100 FERelease
+101 AEAttack
+102 AEDec
+103 AESust
+104 AEDec2
+105 AESust2
+106 AERelease
+107 E3Attack
+108 E3Dec
+109 E3Sust
+110 E3Dec2
+111 E3Sust2
+112 E3Release
+113 E4Attack
+114 E4Dec
+115 E4Sust
+116 E4Dec2
+117 E4Sust2
+118 E4Release
+120 SoundsOff
+121 ResetControllers
+122 LocalControl
+123 NotesOff
+[/CC]
+
+# This section will be readable from Hapax.
+[COMMENT]
+Blofeld can be in multimode, chan 1...16 control their respective sound
+[/COMMENT]
