@@ -409,14 +409,15 @@ const useTrackDefinition = create(
  
             updateFromUpload: (uploadState) => {
                 get().reset()
-                get().updateTrackname(uploadState.tn)
-                get().updateType(uploadState.ty)
-                get().updateOutchan(uploadState.oc)
-                get().updateOutport(uploadState.op)
-                get().updateInport(uploadState.ip)
-                get().updateInchan(uploadState.ic)
-                get().updateMaxrate(uploadState.mr)
-                get().updateComment(uploadState.c)
+                if (uploadState.tn) get().updateTrackname(uploadState.tn)
+                if (uploadState.ty) get().updateType(uploadState.ty)
+                if (uploadState.oc) get().updateOutchan(uploadState.oc)
+                if (uploadState.op) get().updateOutport(uploadState.op)
+                if (uploadState.ip) get().updateInport(uploadState.ip)
+                if (uploadState.ic) get().updateInchan(uploadState.ic)
+                if (uploadState.mr) get().updateMaxrate(uploadState.mr)
+                if (uploadState.c) get().updateComment(uploadState.c)
+            
                 uploadState.ds?.forEach(d => {
                     get().addDrumlane(d)
                 })
