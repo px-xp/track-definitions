@@ -6,7 +6,7 @@ const OCPattern = /^OUTCHAN (NULL|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16)$/
 const IPPattern = /^INPORT (NONE|ALLACTIVE|A|B|USBH|USBD|CVG|NULL)$/
 const ICPattern = /^INCHAN (NULL|ALL|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16)$/
 const MRPattern = /^MAXRATE (NULL|192|96|64|48|32|24|16|12|8|6|4|3|2|1)$/
-const CCPattern = /^(\d+)(?::DEFAULT=(\d+))? (\S+)$/
+const CCPattern = /^(\d+)(?::DEFAULT=(\d+))? (\S.+)$/
 const PCPattern = /^(.+)\s+(\S.+)$/
 const DSPattern = /^([1-8]):((?:\d+|NULL)):(\d{1,2}|G[1-4]|CV[1-4]|CVG[1-4]|NULL):((?:\d+|NULL)) (.+)$/
 const NNPattern = /^(\d{1,3})?:(\d{1,4}):(?:(7|14))((:DEFAULT=(\d{1,3})))? (\S.+)$/

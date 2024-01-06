@@ -26,6 +26,20 @@ test('cc NUMBER NAME', () => {
     expect(r.default).toBe(void 0)
 })
 
+test('cc NUMBER NAME WITH SPACES', () => {
+    const r = Parsers.cc('1 BAR FOO BUZZ') 
+    expect(r.number).toBe('1')
+    expect(r.name).toBe('BAR FOO BUZZ')
+    expect(r.default).toBe(void 0)
+})
+
+test('cc DOUBLE NUMBER NAME WITH SPACES', () => {
+    const r = Parsers.cc('01 BAR FOO BUZZ') 
+    expect(r.number).toBe('01')
+    expect(r.name).toBe('BAR FOO BUZZ')
+    expect(r.default).toBe(void 0)
+})
+
 test('cc NUMBER:DEFAULT=xx NAME', () => {
     const r = Parsers.cc('1:DEFAULT=66 BAR') 
     expect(r.number).toBe('1')
